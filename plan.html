@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Goodfood — Weekly Meal Planner</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo">GF</span>
+      <div>
+        <h1>Goodfood</h1>
+        <p class="tagline">Plan the week · groceries · fresh near you</p>
+      </div>
+    </div>
+    <nav class="tabs">
+      <a href="index.html">Tracker</a>
+      <a href="plan.html" class="active">Meal Plan</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="card prefs">
+      <details id="prefs-panel" open>
+        <summary><h2>Your preferences</h2><span class="prefs-summary" id="prefs-summary"></span></summary>
+
+        <div class="prefs-grid">
+          <fieldset>
+            <legend>Calorie target</legend>
+            <label>Target (kcal/day)
+              <input type="number" id="kcal-target" min="800" max="6000" step="50" value="2000" />
+            </label>
+            <details class="bmr-calc">
+              <summary>Calculate from my stats</summary>
+              <div class="bmr-grid">
+                <label>Sex
+                  <select id="bio-sex"><option value="m">Male</option><option value="f">Female</option></select>
+                </label>
+                <label>Age <input type="number" id="bio-age" min="14" max="100" value="35" /></label>
+                <label>Weight (kg) <input type="number" id="bio-weight" min="30" max="250" step="0.5" value="75" /></label>
+                <label>Height (cm) <input type="number" id="bio-height" min="120" max="230" value="175" /></label>
+                <label>Activity
+                  <select id="bio-activity">
+                    <option value="1.2">Sedentary</option>
+                    <option value="1.375">Light (1–3 d/wk)</option>
+                    <option value="1.55" selected>Moderate (3–5 d/wk)</option>
+                    <option value="1.725">Active (6–7 d/wk)</option>
+                    <option value="1.9">Very active</option>
+                  </select>
+                </label>
+                <label>Goal
+                  <select id="bio-goal">
+                    <option value="0.8">Lose fat</option>
+                    <option value="1" selected>Maintain</option>
+                    <option value="1.15">Gain muscle</option>
+                  </select>
+                </label>
+                <button type="button" id="calc-kcal">Apply</button>
+              </div>
+            </details>
+          </fieldset>
+
+          <fieldset>
+            <legend>Diet style</legend>
+            <label class="check"><input type="checkbox" id="diet-lowcarb" checked /> Low-carb / keto</label>
+            <label class="check"><input type="checkbox" id="diet-nosugar" checked /> Zero added sugar</label>
+            <label class="check"><input type="checkbox" id="diet-nomilk" checked /> No milk / yogurt</label>
+            <label class="check"><input type="checkbox" id="diet-nodairy" /> No dairy at all (excludes butter/cheese)</label>
+            <label class="check"><input type="checkbox" id="diet-nofruit" checked /> No fruit</label>
+            <label class="check"><input type="checkbox" id="diet-noeggs" /> No eggs</label>
+            <label class="check"><input type="checkbox" id="diet-noshellfish" /> No shellfish</label>
+            <label class="check"><input type="checkbox" id="diet-organic" checked /> Prefer organic / grass-fed / wild</label>
+          </fieldset>
+
+          <fieldset>
+            <legend>Foods you love</legend>
+            <p class="hint">Picked meals lean on these.</p>
+            <div class="chip-grid" id="love-chips"></div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Foods to avoid</legend>
+            <p class="hint">Meals containing these are skipped.</p>
+            <div class="chip-grid" id="avoid-chips"></div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Meal schedule</legend>
+            <label>Breakfast <input type="time" id="time-b" value="07:30" /></label>
+            <label>Lunch <input type="time" id="time-l" value="12:30" /></label>
+            <label>Dinner <input type="time" id="time-d" value="19:00" /></label>
+            <label class="check"><input type="checkbox" id="want-snack" /> Include a snack</label>
+            <label>Snack <input type="time" id="time-s" value="16:00" /></label>
+            <label>Meals/week to repeat max
+              <input type="number" id="repeat-max" min="1" max="7" value="2" />
+            </label>
+          </fieldset>
+
+          <fieldset>
+            <legend>Location</legend>
+            <label>City or ZIP/postcode
+              <input type="text" id="loc-input" placeholder="e.g. 94110 or Berkeley, CA" />
+            </label>
+            <div class="loc-actions">
+              <button type="button" id="loc-geo">Use my location</button>
+              <span class="loc-status" id="loc-status">Optional — used to find fresh groceries.</span>
+            </div>
+          </fieldset>
+        </div>
+
+        <div class="prefs-actions">
+          <button type="button" id="generate-btn" class="primary">Generate week</button>
+          <button type="button" id="reshuffle-btn">Reshuffle</button>
+          <button type="button" id="save-prefs">Save preferences</button>
+        </div>
+      </details>
+    </section>
+
+    <section class="card">
+      <div class="card-header">
+        <h2>This week</h2>
+        <div class="week-actions">
+          <button type="button" id="prev-week">&larr;</button>
+          <span id="week-label">—</span>
+          <button type="button" id="next-week">&rarr;</button>
+          <button type="button" id="print-btn">Print</button>
+        </div>
+      </div>
+      <div class="week-grid" id="week-grid"></div>
+    </section>
+
+    <section class="card">
+      <h2>Daily totals</h2>
+      <div class="totals-grid" id="totals-grid"></div>
+    </section>
+
+    <section class="card">
+      <div class="card-header">
+        <h2>Grocery list</h2>
+        <div>
+          <button type="button" id="copy-grocery">Copy</button>
+          <button type="button" id="download-grocery">Download .txt</button>
+        </div>
+      </div>
+      <div class="grocery-grid" id="grocery-grid"></div>
+    </section>
+
+    <section class="card">
+      <div class="card-header">
+        <h2>Fresh groceries near you</h2>
+        <span class="loc-status" id="nearby-loc">Set your location above</span>
+      </div>
+      <div class="stores-grid" id="stores-grid"></div>
+    </section>
+  </main>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="plan.js"></script>
+</body>
+</html>
