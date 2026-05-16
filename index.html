@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Goodfood — Low-Carb Lifestyle Tracker</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo">GF</span>
+      <div>
+        <h1>Goodfood</h1>
+        <p class="tagline">Organic · low-carb · zero-sugar · fat · protein · fiber</p>
+      </div>
+    </div>
+    <div class="date-control">
+      <button id="prev-day" aria-label="Previous day">&larr;</button>
+      <input type="date" id="date-picker" />
+      <button id="next-day" aria-label="Next day">&rarr;</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="summary">
+      <div class="ring-card">
+        <svg class="ring" viewBox="0 0 120 120" aria-hidden="true">
+          <circle class="ring-bg" cx="60" cy="60" r="52" />
+          <circle class="ring-fg" cx="60" cy="60" r="52" id="overall-ring" />
+        </svg>
+        <div class="ring-label">
+          <span id="overall-percent">0%</span>
+          <small>daily goals</small>
+        </div>
+      </div>
+      <div class="stats">
+        <div class="stat" data-metric="fat">
+          <span class="stat-label">Fat</span>
+          <span class="stat-value"><span id="fat-total">0</span> / <span id="fat-goal">130</span> g</span>
+          <div class="bar"><div class="bar-fill" id="fat-bar"></div></div>
+        </div>
+        <div class="stat" data-metric="protein">
+          <span class="stat-label">Protein</span>
+          <span class="stat-value"><span id="pro-total">0</span> / <span id="pro-goal">130</span> g</span>
+          <div class="bar"><div class="bar-fill" id="pro-bar"></div></div>
+        </div>
+        <div class="stat" data-metric="fiber">
+          <span class="stat-label">Fiber</span>
+          <span class="stat-value"><span id="fib-total">0</span> / <span id="fib-goal">25</span> g</span>
+          <div class="bar"><div class="bar-fill" id="fib-bar"></div></div>
+        </div>
+        <div class="stat" data-metric="carbs">
+          <span class="stat-label">Net carbs (cap)</span>
+          <span class="stat-value"><span id="carb-total">0</span> / <span id="carb-goal">20</span> g</span>
+          <div class="bar"><div class="bar-fill cap" id="carb-bar"></div></div>
+        </div>
+        <div class="stat" data-metric="sugar">
+          <span class="stat-label">Sugar (cap)</span>
+          <span class="stat-value"><span id="sugar-total">0</span> / <span id="sugar-goal">0</span> g</span>
+          <div class="bar"><div class="bar-fill cap" id="sugar-bar"></div></div>
+        </div>
+        <div class="stat" data-metric="water">
+          <span class="stat-label">Water</span>
+          <span class="stat-value"><span id="water-total">0</span> / <span id="water-goal">10</span> cups</span>
+          <div class="bar"><div class="bar-fill" id="water-bar"></div></div>
+        </div>
+        <div class="stat" data-metric="organic">
+          <span class="stat-label">Organic meals</span>
+          <span class="stat-value"><span id="org-total">0</span> / <span id="org-count">0</span> (<span id="org-pct">0%</span>)</span>
+          <div class="bar"><div class="bar-fill" id="org-bar"></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cards">
+      <article class="card">
+        <h2>Water &amp; electrolytes</h2>
+        <p class="card-hint">Low-carb increases water + sodium needs. Tap cups; log salt &amp; electrolytes.</p>
+        <div class="cups" id="cups"></div>
+        <div class="row-form compact">
+          <button class="link-btn" id="add-cup">+ Add cup</button>
+          <label class="inline">
+            Sodium (mg)
+            <input type="number" id="sodium" min="0" max="10000" step="100" />
+          </label>
+          <label class="inline">
+            Electrolytes
+            <select id="electrolytes">
+              <option value="">—</option>
+              <option value="yes">Taken</option>
+              <option value="no">Skipped</option>
+            </select>
+          </label>
+          <button id="save-hydration" type="button">Save</button>
+        </div>
+      </article>
+
+      <article class="card">
+        <h2>Meal log</h2>
+        <p class="card-hint">Macros only — organic, no milk, no fruit, no sugar. Calories auto-calculated.</p>
+        <form id="meal-form" class="meal-form">
+          <input type="text" id="meal-name" placeholder="e.g. Ribeye with butter & spinach" required list="food-suggestions" />
+          <datalist id="food-suggestions"></datalist>
+          <select id="meal-type">
+            <option value="breakfast">Breakfast</option>
+            <option value="lunch">Lunch</option>
+            <option value="dinner">Dinner</option>
+            <option value="snack">Snack</option>
+          </select>
+          <div class="macros-grid">
+            <label>Fat (g)<input type="number" id="meal-fat" min="0" step="0.1" required /></label>
+            <label>Protein (g)<input type="number" id="meal-pro" min="0" step="0.1" required /></label>
+            <label>Fiber (g)<input type="number" id="meal-fib" min="0" step="0.1" value="0" /></label>
+            <label>Net carbs (g)<input type="number" id="meal-carb" min="0" step="0.1" value="0" /></label>
+            <label>Sugar (g)<input type="number" id="meal-sugar" min="0" step="0.1" value="0" /></label>
+          </div>
+          <label class="organic-toggle">
+            <input type="checkbox" id="meal-organic" checked />
+            <span>Organic / grass-fed / wild-caught</span>
+          </label>
+          <div id="meal-warning" class="warning" hidden></div>
+          <button type="submit">Add meal</button>
+        </form>
+        <ul class="entries" id="meal-list"></ul>
+      </article>
+
+      <article class="card">
+        <h2>Approved foods</h2>
+        <p class="card-hint">Choose organic / grass-fed / wild whenever possible. Click to prefill the meal form.</p>
+        <div class="food-cats">
+          <div>
+            <h3>Fat</h3>
+            <ul class="food-list" data-cat="fat"></ul>
+          </div>
+          <div>
+            <h3>Protein</h3>
+            <ul class="food-list" data-cat="protein"></ul>
+          </div>
+          <div>
+            <h3>Fiber (low-carb veg)</h3>
+            <ul class="food-list" data-cat="fiber"></ul>
+          </div>
+          <div class="avoid">
+            <h3>Avoid</h3>
+            <ul class="avoid-list">
+              <li>All sugars &amp; sweeteners with calories</li>
+              <li>Milk, yogurt drinks (cream &amp; hard cheese ok if tolerated)</li>
+              <li>All fruit (incl. bananas, apples, grapes, dates)</li>
+              <li>Grains, bread, rice, pasta, oats</li>
+              <li>Legumes (beans, lentils, chickpeas)</li>
+              <li>Starchy veg (potato, corn, peas)</li>
+              <li>Sweetened drinks &amp; juice</li>
+            </ul>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <h2>Exercise</h2>
+        <form id="ex-form" class="row-form">
+          <input type="text" id="ex-name" placeholder="e.g. Heavy lifts, walk, sprints" required />
+          <input type="number" id="ex-min" placeholder="minutes" min="1" max="600" required />
+          <select id="ex-intensity">
+            <option value="light">Light</option>
+            <option value="moderate" selected>Moderate</option>
+            <option value="vigorous">Vigorous</option>
+          </select>
+          <button type="submit">Add</button>
+        </form>
+        <ul class="entries" id="ex-list"></ul>
+      </article>
+
+      <article class="card">
+        <h2>Sleep, stress &amp; mood</h2>
+        <p class="card-hint">Target: 8h sleep · stress less every day.</p>
+        <form id="sleep-form" class="row-form">
+          <label class="inline">
+            Hours slept
+            <input type="number" id="sleep-hours" min="0" max="24" step="0.5" placeholder="8" />
+          </label>
+          <label class="inline">
+            Stress (1–5)
+            <select id="stress">
+              <option value="">—</option>
+              <option value="1">1 — calm</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5 — overwhelmed</option>
+            </select>
+          </label>
+          <label class="inline">
+            Mood
+            <select id="mood">
+              <option value="">—</option>
+              <option value="great">Great</option>
+              <option value="good">Good</option>
+              <option value="okay">Okay</option>
+              <option value="low">Low</option>
+            </select>
+          </label>
+          <button type="submit">Save</button>
+        </form>
+        <div class="practice-row">
+          <label class="inline">
+            Mindfulness / breathing (min)
+            <input type="number" id="mindful-min" min="0" max="180" step="1" placeholder="10" />
+          </label>
+          <div class="practice-tags" id="practice-tags">
+            <button type="button" class="tag" data-practice="walk">Outdoor walk</button>
+            <button type="button" class="tag" data-practice="breathing">Breathing</button>
+            <button type="button" class="tag" data-practice="meditation">Meditation</button>
+            <button type="button" class="tag" data-practice="journal">Journal</button>
+            <button type="button" class="tag" data-practice="screens-off">Screens off 1h</button>
+          </div>
+          <button type="button" id="save-practice">Save practice</button>
+        </div>
+        <p class="card-hint" id="sleep-status">No entries yet.</p>
+      </article>
+
+      <article class="card wide">
+        <h2>7-day macro trend</h2>
+        <div class="trend" id="trend"></div>
+        <div class="legend">
+          <span><i class="dot fat"></i> Fat</span>
+          <span><i class="dot pro"></i> Protein</span>
+          <span><i class="dot fib"></i> Fiber</span>
+          <span><i class="dot carb"></i> Net carbs</span>
+          <span><i class="dot sugar"></i> Sugar</span>
+        </div>
+      </article>
+
+      <article class="card wide">
+        <h2>Goals</h2>
+        <form id="goals-form" class="goals-grid">
+          <label>Fat (g)<input type="number" id="goal-fat" min="20" max="400" /></label>
+          <label>Protein (g)<input type="number" id="goal-pro" min="30" max="400" /></label>
+          <label>Fiber (g)<input type="number" id="goal-fib" min="5" max="80" /></label>
+          <label>Net carbs cap (g)<input type="number" id="goal-carb" min="0" max="100" /></label>
+          <label>Sugar cap (g)<input type="number" id="goal-sugar" min="0" max="50" /></label>
+          <label>Water (cups)<input type="number" id="goal-water" min="1" max="30" /></label>
+          <button type="submit">Save goals</button>
+        </form>
+        <div class="data-actions">
+          <button class="link-btn" id="export-btn">Export data</button>
+          <button class="link-btn danger" id="reset-btn">Reset all data</button>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
