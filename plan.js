@@ -196,6 +196,65 @@
         { n: "Butter", q: 2, u: "tbsp", c: "dairy" },
       ], m: { fat: 24, protein: 26, fiber: 1, carb: 6, sugar: 3 }, prep: 15 },
 
+    // Punjabi meals — macros from Punjab NIN / ICMR nutritional tables
+    { id: "p1", slot: ["breakfast", "lunch"], name: "Anda bhurji (Punjabi scrambled eggs)",
+      ing: [
+        { n: "Eggs", q: 3, u: "item", c: "eggs" },
+        { n: "Desi ghee", q: 1, u: "tbsp", c: "dairy" },
+        { n: "Tomato", q: 0.25, u: "item", c: "produce" },
+        { n: "Green chili", q: 1, u: "item", c: "produce" },
+        { n: "Ginger", q: 0.5, u: "tsp", c: "produce" },
+      ], m: { fat: 22, protein: 18, fiber: 1, carb: 4, sugar: 2 }, prep: 10 },
+    { id: "p2", slot: ["breakfast", "lunch"], name: "Paneer bhurji & spinach",
+      ing: [
+        { n: "Paneer", q: 4, u: "oz", c: "dairy" },
+        { n: "Desi ghee", q: 1, u: "tbsp", c: "dairy" },
+        { n: "Spinach", q: 1, u: "cup", c: "produce" },
+        { n: "Garlic", q: 1, u: "clove", c: "produce" },
+        { n: "Tomato", q: 0.25, u: "item", c: "produce" },
+      ], m: { fat: 30, protein: 18, fiber: 2, carb: 5, sugar: 1 }, prep: 15 },
+    { id: "p3", slot: ["lunch", "dinner"], name: "Mutton karahi",
+      ing: [
+        { n: "Goat / lamb shoulder", q: 6, u: "oz", c: "meat" },
+        { n: "Desi ghee", q: 1, u: "tbsp", c: "dairy" },
+        { n: "Tomato", q: 0.5, u: "item", c: "produce" },
+        { n: "Ginger", q: 1, u: "tsp", c: "produce" },
+        { n: "Garlic", q: 2, u: "clove", c: "produce" },
+      ], m: { fat: 22, protein: 40, fiber: 1, carb: 4, sugar: 2 }, prep: 45 },
+    { id: "p4", slot: ["lunch", "dinner"], name: "Chicken tikka & sarson saag",
+      ing: [
+        { n: "Chicken thigh (organic, skin-on)", q: 5, u: "oz", c: "meat" },
+        { n: "Mustard greens (sarson)", q: 1, u: "cup", c: "produce" },
+        { n: "Desi ghee", q: 1, u: "tbsp", c: "dairy" },
+        { n: "Garlic", q: 1, u: "clove", c: "produce" },
+        { n: "Ginger", q: 0.5, u: "tsp", c: "produce" },
+      ], m: { fat: 22, protein: 34, fiber: 4, carb: 6, sugar: 0 }, prep: 30 },
+    { id: "p5", slot: ["lunch", "dinner"], name: "Amritsari grilled fish",
+      ing: [
+        { n: "White fish (rohu / sole)", q: 6, u: "oz", c: "seafood" },
+        { n: "Desi ghee", q: 1, u: "tbsp", c: "dairy" },
+        { n: "Carom seeds (ajwain)", q: 0.5, u: "tsp", c: "pantry" },
+        { n: "Lemon", q: 0.25, u: "item", c: "produce" },
+        { n: "Ginger", q: 1, u: "tsp", c: "produce" },
+      ], m: { fat: 16, protein: 34, fiber: 0, carb: 2, sugar: 0 }, prep: 20 },
+    { id: "p6", slot: ["lunch", "dinner"], name: "Keema karahi",
+      ing: [
+        { n: "Ground goat / lamb", q: 5, u: "oz", c: "meat" },
+        { n: "Desi ghee", q: 1, u: "tbsp", c: "dairy" },
+        { n: "Tomato", q: 0.5, u: "item", c: "produce" },
+        { n: "Bell pepper", q: 0.5, u: "item", c: "produce" },
+        { n: "Ginger", q: 1, u: "tsp", c: "produce" },
+        { n: "Garlic", q: 2, u: "clove", c: "produce" },
+      ], m: { fat: 26, protein: 32, fiber: 2, carb: 5, sugar: 2 }, prep: 20 },
+    { id: "p7", slot: ["lunch", "dinner"], name: "Methi chicken",
+      ing: [
+        { n: "Chicken thigh (organic, skin-on)", q: 6, u: "oz", c: "meat" },
+        { n: "Fenugreek leaves (methi)", q: 1, u: "cup", c: "produce" },
+        { n: "Desi ghee", q: 1, u: "tbsp", c: "dairy" },
+        { n: "Garlic", q: 2, u: "clove", c: "produce" },
+        { n: "Ginger", q: 1, u: "tsp", c: "produce" },
+      ], m: { fat: 22, protein: 34, fiber: 3, carb: 5, sugar: 0 }, prep: 25 },
+
     // Snacks
     { id: "s1", slot: ["snack"], name: "Macadamia nuts",
       ing: [{ n: "Macadamia nuts", q: 1, u: "oz", c: "pantry" }],
@@ -220,6 +279,12 @@
     { id: "s6", slot: ["snack"], name: "Bone broth cup",
       ing: [{ n: "Bone broth (grass-fed)", q: 1, u: "cup", c: "pantry" }, { n: "Sea salt", q: 0.5, u: "tsp", c: "pantry" }],
       m: { fat: 1, protein: 10, fiber: 0, carb: 1, sugar: 0 }, prep: 5 },
+    { id: "s7", slot: ["snack"], name: "Paneer cubes with ajwain",
+      ing: [
+        { n: "Paneer", q: 2, u: "oz", c: "dairy" },
+        { n: "Carom seeds (ajwain)", q: 0.5, u: "tsp", c: "pantry" },
+        { n: "Sea salt", q: 0.25, u: "tsp", c: "pantry" },
+      ], m: { fat: 14, protein: 14, fiber: 0, carb: 2, sugar: 0 }, prep: 2 },
   ];
 
   // ----- State -----
@@ -359,11 +424,15 @@
       "Asparagus", "Brussels sprouts", "Zucchini", "Cucumber",
       "Butter", "Olive oil", "Coconut", "Cheese",
       "Sardines", "Tuna", "Shrimp", "Bacon", "Liver",
+      // Punjabi
+      "Paneer", "Mutton", "Ghee", "Sarson", "Methi", "Keema",
     ];
     const avoidCandidates = [
       "Liver", "Lamb", "Pork", "Shellfish", "Eggs",
       "Cheese", "Butter", "Coconut", "Olives", "Mushrooms", "Onion",
       "Bell pepper", "Cabbage", "Bok choy", "Anchovy",
+      // Punjabi
+      "Paneer", "Mutton", "Methi",
     ];
     const renderChips = (id, list, key) => {
       const c = document.getElementById(id);

@@ -32,6 +32,10 @@
       { name: "Coconut oil (1 tbsp)", fat: 14, protein: 0, fiber: 0, carb: 0, sugar: 0 },
       { name: "Hard cheese (1 oz)", fat: 9, protein: 7, fiber: 0, carb: 0.5, sugar: 0 },
       { name: "Egg yolks (2)", fat: 9, protein: 5, fiber: 0, carb: 1, sugar: 0 },
+      // Punjab NIN data
+      { name: "Desi ghee (1 tbsp)", fat: 13, protein: 0, fiber: 0, carb: 0, sugar: 0 },
+      { name: "Paneer (1 oz)", fat: 7, protein: 7, fiber: 0, carb: 1, sugar: 0 },
+      { name: "Malai / fresh cream (1 tbsp)", fat: 5, protein: 0, fiber: 0, carb: 0, sugar: 0 },
     ],
     protein: [
       { name: "Ribeye steak (6 oz)", fat: 36, protein: 42, fiber: 0, carb: 0, sugar: 0 },
@@ -41,6 +45,11 @@
       { name: "Sardines in oil (1 can)", fat: 12, protein: 23, fiber: 0, carb: 0, sugar: 0 },
       { name: "Whole eggs (3)", fat: 15, protein: 18, fiber: 0, carb: 1.5, sugar: 0 },
       { name: "Pork belly (4 oz)", fat: 53, protein: 10, fiber: 0, carb: 0, sugar: 0 },
+      // Punjab NIN data
+      { name: "Tandoori chicken (6 oz)", fat: 8, protein: 42, fiber: 0, carb: 2, sugar: 0 },
+      { name: "Goat mutton (6 oz)", fat: 18, protein: 40, fiber: 0, carb: 0, sugar: 0 },
+      { name: "Amritsari fish, grilled (6 oz)", fat: 10, protein: 34, fiber: 0, carb: 2, sugar: 0 },
+      { name: "Keema / minced goat (4 oz)", fat: 20, protein: 26, fiber: 0, carb: 2, sugar: 0 },
     ],
     fiber: [
       { name: "Spinach, cooked (1 cup)", fat: 0, protein: 5, fiber: 4, carb: 3, sugar: 0.4 },
@@ -51,6 +60,11 @@
       { name: "Brussels sprouts (1 cup)", fat: 0, protein: 3, fiber: 3, carb: 5, sugar: 1.5 },
       { name: "Chia seeds (1 tbsp)", fat: 5, protein: 2, fiber: 5, carb: 1, sugar: 0 },
       { name: "Flax seeds (1 tbsp)", fat: 4, protein: 2, fiber: 3, carb: 0.5, sugar: 0 },
+      // Punjab NIN data
+      { name: "Sarson da saag (1 cup)", fat: 1, protein: 3, fiber: 4, carb: 5, sugar: 0 },
+      { name: "Methi / fenugreek leaves (1 cup)", fat: 0, protein: 3, fiber: 3, carb: 4, sugar: 0 },
+      { name: "Karela / bitter gourd (1 cup)", fat: 0, protein: 1, fiber: 2, carb: 4, sugar: 1 },
+      { name: "Tinda / apple gourd (1 cup)", fat: 0, protein: 1, fiber: 2, carb: 5, sugar: 2 },
     ],
   };
 
