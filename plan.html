@@ -4,6 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Goodfood — Weekly Meal Planner</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Gurmukhi:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -11,137 +14,146 @@
     <div class="brand">
       <span class="logo">GF</span>
       <div>
-        <h1>Goodfood</h1>
-        <p class="tagline">Plan the week · groceries · fresh near you</p>
+        <h1 data-i18n="brand.title">Goodfood</h1>
+        <p class="tagline" data-i18n="tagline.plan">Plan the week · groceries · fresh near you</p>
       </div>
     </div>
     <nav class="tabs">
-      <a href="index.html">Tracker</a>
-      <a href="plan.html" class="active">Meal Plan</a>
+      <a href="index.html" data-i18n="nav.tracker">Tracker</a>
+      <a href="plan.html" class="active" data-i18n="nav.plan">Meal Plan</a>
     </nav>
+    <div class="topbar-right">
+      <div class="lang-switch">
+        <button type="button" data-lang-btn="en" data-i18n="lang.en">EN</button>
+        <button type="button" data-lang-btn="pa" data-i18n="lang.pa">ਪੰ</button>
+      </div>
+    </div>
   </header>
 
   <main>
     <section class="card prefs">
       <details id="prefs-panel" open>
-        <summary><h2>Your preferences</h2><span class="prefs-summary" id="prefs-summary"></span></summary>
+        <summary><h2 data-i18n="prefs.title">Your preferences</h2><span class="prefs-summary" id="prefs-summary"></span></summary>
 
         <div class="prefs-grid">
           <fieldset>
-            <legend>Calorie target</legend>
-            <label>Target (kcal/day)
+            <legend data-i18n="legend.kcalTarget">Calorie target</legend>
+            <label><span data-i18n="label.targetKcal">Target (kcal/day)</span>
               <input type="number" id="kcal-target" min="800" max="6000" step="50" value="2000" />
             </label>
             <details class="bmr-calc">
-              <summary>Calculate from my stats</summary>
+              <summary data-i18n="bmr.summary">Calculate from my stats</summary>
               <div class="bmr-grid">
-                <label>Sex
-                  <select id="bio-sex"><option value="m">Male</option><option value="f">Female</option></select>
+                <label><span data-i18n="label.sex">Sex</span>
+                  <select id="bio-sex">
+                    <option value="m" data-i18n="opt.male">Male</option>
+                    <option value="f" data-i18n="opt.female">Female</option>
+                  </select>
                 </label>
-                <label>Age <input type="number" id="bio-age" min="14" max="100" value="35" /></label>
-                <label>Weight (kg) <input type="number" id="bio-weight" min="30" max="250" step="0.5" value="75" /></label>
-                <label>Height (cm) <input type="number" id="bio-height" min="120" max="230" value="175" /></label>
-                <label>Activity
+                <label><span data-i18n="label.age">Age</span> <input type="number" id="bio-age" min="14" max="100" value="35" /></label>
+                <label><span data-i18n="label.weightKg">Weight (kg)</span> <input type="number" id="bio-weight" min="30" max="250" step="0.5" value="75" /></label>
+                <label><span data-i18n="label.heightCm">Height (cm)</span> <input type="number" id="bio-height" min="120" max="230" value="175" /></label>
+                <label><span data-i18n="label.activity">Activity</span>
                   <select id="bio-activity">
-                    <option value="1.2">Sedentary</option>
-                    <option value="1.375">Light (1–3 d/wk)</option>
-                    <option value="1.55" selected>Moderate (3–5 d/wk)</option>
-                    <option value="1.725">Active (6–7 d/wk)</option>
-                    <option value="1.9">Very active</option>
+                    <option value="1.2" data-i18n="opt.sedentary">Sedentary</option>
+                    <option value="1.375" data-i18n="opt.lightAct">Light (1–3 d/wk)</option>
+                    <option value="1.55" selected data-i18n="opt.moderateAct">Moderate (3–5 d/wk)</option>
+                    <option value="1.725" data-i18n="opt.active">Active (6–7 d/wk)</option>
+                    <option value="1.9" data-i18n="opt.veryActive">Very active</option>
                   </select>
                 </label>
-                <label>Goal
+                <label><span data-i18n="label.goal">Goal</span>
                   <select id="bio-goal">
-                    <option value="0.8">Lose fat</option>
-                    <option value="1" selected>Maintain</option>
-                    <option value="1.15">Gain muscle</option>
+                    <option value="0.8" data-i18n="opt.loseFat">Lose fat</option>
+                    <option value="1" selected data-i18n="opt.maintain">Maintain</option>
+                    <option value="1.15" data-i18n="opt.gainMuscle">Gain muscle</option>
                   </select>
                 </label>
-                <button type="button" id="calc-kcal">Apply</button>
+                <button type="button" id="calc-kcal" data-i18n="btn.apply">Apply</button>
               </div>
             </details>
           </fieldset>
 
           <fieldset>
-            <legend>Diet style</legend>
-            <label class="check"><input type="checkbox" id="diet-lowcarb" checked /> Low-carb / keto</label>
-            <label class="check"><input type="checkbox" id="diet-nosugar" checked /> Zero added sugar</label>
-            <label class="check"><input type="checkbox" id="diet-nomilk" checked /> No milk / yogurt</label>
-            <label class="check"><input type="checkbox" id="diet-nodairy" /> No dairy at all (excludes butter/cheese)</label>
-            <label class="check"><input type="checkbox" id="diet-nofruit" checked /> No fruit</label>
-            <label class="check"><input type="checkbox" id="diet-noeggs" /> No eggs</label>
-            <label class="check"><input type="checkbox" id="diet-noshellfish" /> No shellfish</label>
-            <label class="check"><input type="checkbox" id="diet-organic" checked /> Prefer organic / grass-fed / wild</label>
+            <legend data-i18n="legend.dietStyle">Diet style</legend>
+            <label class="check"><input type="checkbox" id="diet-lowcarb" checked /> <span data-i18n="diet.lowcarb">Low-carb / keto</span></label>
+            <label class="check"><input type="checkbox" id="diet-nosugar" checked /> <span data-i18n="diet.nosugar">Zero added sugar</span></label>
+            <label class="check"><input type="checkbox" id="diet-nomilk" checked /> <span data-i18n="diet.nomilk">No milk / yogurt</span></label>
+            <label class="check"><input type="checkbox" id="diet-nodairy" /> <span data-i18n="diet.nodairy">No dairy at all (excludes butter/cheese)</span></label>
+            <label class="check"><input type="checkbox" id="diet-nofruit" checked /> <span data-i18n="diet.nofruit">No fruit</span></label>
+            <label class="check"><input type="checkbox" id="diet-noeggs" /> <span data-i18n="diet.noeggs">No eggs</span></label>
+            <label class="check"><input type="checkbox" id="diet-noshellfish" /> <span data-i18n="diet.noshellfish">No shellfish</span></label>
+            <label class="check"><input type="checkbox" id="diet-organic" checked /> <span data-i18n="diet.organic">Prefer organic / grass-fed / wild</span></label>
           </fieldset>
 
           <fieldset>
-            <legend>Foods you love</legend>
-            <p class="hint">Picked meals lean on these.</p>
+            <legend data-i18n="legend.love">Foods you love</legend>
+            <p class="hint" data-i18n="hint.love">Picked meals lean on these.</p>
             <div class="chip-grid" id="love-chips"></div>
           </fieldset>
 
           <fieldset>
-            <legend>Foods to avoid</legend>
-            <p class="hint">Meals containing these are skipped.</p>
+            <legend data-i18n="legend.avoidList">Foods to avoid</legend>
+            <p class="hint" data-i18n="hint.avoidList">Meals containing these are skipped.</p>
             <div class="chip-grid" id="avoid-chips"></div>
           </fieldset>
 
           <fieldset>
-            <legend>Meal schedule</legend>
-            <label>Breakfast <input type="time" id="time-b" value="07:30" /></label>
-            <label>Lunch <input type="time" id="time-l" value="12:30" /></label>
-            <label>Dinner <input type="time" id="time-d" value="19:00" /></label>
-            <label class="check"><input type="checkbox" id="want-snack" /> Include a snack</label>
-            <label>Snack <input type="time" id="time-s" value="16:00" /></label>
-            <label>Meals/week to repeat max
+            <legend data-i18n="legend.schedule">Meal schedule</legend>
+            <label><span data-i18n="opt.breakfast">Breakfast</span> <input type="time" id="time-b" value="07:30" /></label>
+            <label><span data-i18n="opt.lunch">Lunch</span> <input type="time" id="time-l" value="12:30" /></label>
+            <label><span data-i18n="opt.dinner">Dinner</span> <input type="time" id="time-d" value="19:00" /></label>
+            <label class="check"><input type="checkbox" id="want-snack" /> <span data-i18n="label.includeSnack">Include a snack</span></label>
+            <label><span data-i18n="opt.snack">Snack</span> <input type="time" id="time-s" value="16:00" /></label>
+            <label><span data-i18n="label.repeatMax">Meals/week to repeat max</span>
               <input type="number" id="repeat-max" min="1" max="7" value="2" />
             </label>
           </fieldset>
 
           <fieldset>
-            <legend>Location</legend>
-            <label>City or ZIP/postcode
-              <input type="text" id="loc-input" placeholder="e.g. 94110 or Berkeley, CA" />
+            <legend data-i18n="legend.location">Location</legend>
+            <label><span data-i18n="label.cityZip">City or ZIP/postcode</span>
+              <input type="text" id="loc-input" data-i18n-placeholder="ph.cityZip" placeholder="e.g. 94110 or Berkeley, CA" />
             </label>
             <div class="loc-actions">
-              <button type="button" id="loc-geo">Use my location</button>
-              <span class="loc-status" id="loc-status">Optional — used to find fresh groceries.</span>
+              <button type="button" id="loc-geo" data-i18n="btn.useLocation">Use my location</button>
+              <span class="loc-status" id="loc-status" data-i18n="hint.locationOptional">Optional — used to find fresh groceries.</span>
             </div>
           </fieldset>
         </div>
 
         <div class="prefs-actions">
-          <button type="button" id="generate-btn" class="primary">Generate week</button>
-          <button type="button" id="reshuffle-btn">Reshuffle</button>
-          <button type="button" id="save-prefs">Save preferences</button>
+          <button type="button" id="generate-btn" class="primary" data-i18n="btn.generateWeek">Generate week</button>
+          <button type="button" id="reshuffle-btn" data-i18n="btn.reshuffle">Reshuffle</button>
+          <button type="button" id="save-prefs" data-i18n="btn.savePrefs">Save preferences</button>
         </div>
       </details>
     </section>
 
     <section class="card">
       <div class="card-header">
-        <h2>This week</h2>
+        <h2 data-i18n="card.thisWeek">This week</h2>
         <div class="week-actions">
           <button type="button" id="prev-week">&larr;</button>
           <span id="week-label">—</span>
           <button type="button" id="next-week">&rarr;</button>
-          <button type="button" id="print-btn">Print</button>
+          <button type="button" id="print-btn" data-i18n="btn.print">Print</button>
         </div>
       </div>
       <div class="week-grid" id="week-grid"></div>
     </section>
 
     <section class="card">
-      <h2>Daily totals</h2>
+      <h2 data-i18n="card.dailyTotals">Daily totals</h2>
       <div class="totals-grid" id="totals-grid"></div>
     </section>
 
     <section class="card">
       <div class="card-header">
-        <h2>Grocery list</h2>
+        <h2 data-i18n="card.groceryList">Grocery list</h2>
         <div>
-          <button type="button" id="copy-grocery">Copy</button>
-          <button type="button" id="download-grocery">Download .txt</button>
+          <button type="button" id="copy-grocery" data-i18n="btn.copy">Copy</button>
+          <button type="button" id="download-grocery" data-i18n="btn.downloadTxt">Download .txt</button>
         </div>
       </div>
       <div class="grocery-grid" id="grocery-grid"></div>
@@ -149,8 +161,8 @@
 
     <section class="card">
       <div class="card-header">
-        <h2>Fresh groceries near you</h2>
-        <span class="loc-status" id="nearby-loc">Set your location above</span>
+        <h2 data-i18n="card.storesTitle">Fresh groceries near you</h2>
+        <span class="loc-status" id="nearby-loc" data-i18n="stores.placeholder">Set your location above</span>
       </div>
       <div class="stores-grid" id="stores-grid"></div>
     </section>
@@ -158,6 +170,7 @@
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
+  <script src="i18n.js"></script>
   <script src="plan.js"></script>
 </body>
 </html>

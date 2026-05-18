@@ -252,8 +252,10 @@
     return x;
   }
   function fmtDate(d) {
-    return d.toLocaleDateString([], { weekday: "short", month: "short", day: "numeric" });
+    const loc = window.i18n ? window.i18n.getLocale() : undefined;
+    return d.toLocaleDateString(loc, { weekday: "short", month: "short", day: "numeric" });
   }
+  function tr(key, vars) { return window.t ? window.t(key, vars) : key; }
   function calcKcal(meal) {
     return Math.round(meal.m.fat * 9 + meal.m.protein * 4 + meal.m.carb * 4);
   }
@@ -448,12 +450,12 @@
   }
 
   function updateSummary() {
-    const dietBits = Object.entries(state.diet).filter(([, v]) => v).map(([k]) => k);
+    const dietCount = Object.values(state.diet).filter(Boolean).length;
     const bits = [
-      `${state.kcal} kcal/day`,
-      dietBits.length ? dietBits.length + " diet rules" : "no diet rules",
-      state.love.length ? `${state.love.length} loved` : null,
-      state.avoid.length ? `${state.avoid.length} avoided` : null,
+      `${state.kcal} ${tr("unit.kcal")}/${tr("opt.dinner") === "ਰਾਤ ਦਾ ਖਾਣਾ" ? "ਦਿਨ" : "day"}`,
+      `${dietCount} ${tr("legend.dietStyle")}`,
+      state.love.length ? `${state.love.length} ♥` : null,
+      state.avoid.length ? `${state.avoid.length} ✕` : null,
       state.location.text ? `📍 ${state.location.text}` : null,
     ].filter(Boolean);
     document.getElementById("prefs-summary").textContent = bits.join(" · ");
@@ -463,7 +465,7 @@
     const grid = document.getElementById("week-grid");
     grid.innerHTML = "";
     if (!state.week) {
-      grid.innerHTML = `<p class="hint center">Set preferences above and click <strong>Generate week</strong>.</p>`;
+      grid.innerHTML = `<p class="hint center">${tr("week.empty")}</p>`;
       document.getElementById("week-label").textContent = "—";
       return;
     }
@@ -471,10 +473,10 @@
     document.getElementById("week-label").textContent =
       `${fmtDate(start)} – ${fmtDate(new Date(start.getTime() + 6 * 86400000))}`;
     const slotMeta = {
-      breakfast: { label: "Breakfast", t: state.schedule.b },
-      lunch: { label: "Lunch", t: state.schedule.l },
-      dinner: { label: "Dinner", t: state.schedule.d },
-      snack: { label: "Snack", t: state.schedule.s },
+      breakfast: { label: tr("opt.breakfast"), t: state.schedule.b },
+      lunch: { label: tr("opt.lunch"), t: state.schedule.l },
+      dinner: { label: tr("opt.dinner"), t: state.schedule.d },
+      snack: { label: tr("opt.snack"), t: state.schedule.s },
     };
     state.week.forEach((day, di) => {
       const date = new Date(start.getTime() + di * 86400000);
@@ -494,9 +496,9 @@
             <button class="link-btn" data-swap aria-label="Swap meal">↻</button>
           </div>
           <div class="meal-name">${escapeHtml(meal.name)}</div>
-          <div class="meal-macros">${kcal} kcal · F${meal.m.fat} P${meal.m.protein} Fib${meal.m.fiber} C${meal.m.carb}</div>
+          <div class="meal-macros">${kcal} ${tr("unit.kcal")} · F${meal.m.fat} P${meal.m.protein} Fib${meal.m.fiber} C${meal.m.carb}</div>
           <details class="meal-ings">
-            <summary>${meal.ing.length} ingredients · ${meal.prep} min</summary>
+            <summary>${tr("week.ingredients", { n: meal.ing.length, min: meal.prep })}</summary>
             <ul>${meal.ing.map((i) => `<li>${formatQty(i.q, i.u)} ${escapeHtml(i.n)}</li>`).join("")}</ul>
           </details>
         `;
@@ -528,10 +530,11 @@
       const goalPct = Math.round((t.kcal / state.kcal) * 100);
       const card = document.createElement("div");
       card.className = "total-card";
+      const loc = window.i18n ? window.i18n.getLocale() : undefined;
       card.innerHTML = `
-        <strong>${date.toLocaleDateString([], { weekday: "short" })}</strong>
-        <div class="big">${t.kcal} <small>kcal</small></div>
-        <div class="hint">${goalPct}% of ${state.kcal}</div>
+        <strong>${date.toLocaleDateString(loc, { weekday: "short" })}</strong>
+        <div class="big">${t.kcal} <small>${tr("unit.kcal")}</small></div>
+        <div class="hint">${tr("week.kcalOfTarget", { pct: goalPct, target: state.kcal })}</div>
         <div class="macro-row">F${t.fat} · P${t.protein} · Fib${t.fiber} · C${t.carb} · S${t.sugar}</div>
       `;
       c.appendChild(card);
@@ -570,19 +573,15 @@
     grid.innerHTML = "";
     const byCat = buildGrocery();
     if (Object.keys(byCat).length === 0) {
-      grid.innerHTML = `<p class="hint center">Generate a week to see your grocery list.</p>`;
+      grid.innerHTML = `<p class="hint center">${tr("grocery.empty")}</p>`;
       return;
     }
-    const labels = {
-      meat: "Meat", seafood: "Seafood", produce: "Produce",
-      dairy: "Dairy", eggs: "Eggs", pantry: "Pantry & oils",
-    };
     const order = ["meat", "seafood", "eggs", "dairy", "produce", "pantry"];
     for (const k of order) {
       if (!byCat[k]) continue;
       const block = document.createElement("div");
       block.className = "grocery-block";
-      block.innerHTML = `<h4>${labels[k] || k}</h4>`;
+      block.innerHTML = `<h4>${tr(`grocery.cat.${k}`)}</h4>`;
       const ul = document.createElement("ul");
       for (const i of byCat[k]) {
         const li = document.createElement("li");
@@ -596,12 +595,11 @@
 
   function groceryAsText() {
     const byCat = buildGrocery();
-    const labels = { meat:"Meat", seafood:"Seafood", produce:"Produce", dairy:"Dairy", eggs:"Eggs", pantry:"Pantry & oils" };
     const order = ["meat","seafood","eggs","dairy","produce","pantry"];
-    const lines = ["Goodfood — Weekly grocery list", ""];
+    const lines = [tr("grocery.weekHeader"), ""];
     for (const k of order) {
       if (!byCat[k]) continue;
-      lines.push(`== ${labels[k] || k} ==`);
+      lines.push(`== ${tr(`grocery.cat.${k}`)} ==`);
       for (const i of byCat[k]) lines.push(`- ${formatQty(i.q, i.u)} ${i.n}`);
       lines.push("");
     }
@@ -620,21 +618,25 @@
     grid.innerHTML = "";
     const loc = state.location;
     const where = loc.lat && loc.lon ? `${loc.lat},${loc.lon}` : loc.text;
-    document.getElementById("nearby-loc").textContent = where
-      ? `Searching near: ${loc.text || `${loc.lat.toFixed(3)}, ${loc.lon.toFixed(3)}`}`
-      : "Set your location above";
+    const nearbyEl = document.getElementById("nearby-loc");
+    if (where) {
+      const displayWhere = loc.text || `${loc.lat.toFixed(3)}, ${loc.lon.toFixed(3)}`;
+      nearbyEl.textContent = tr("stores.searchingNear", { where: displayWhere });
+    } else {
+      nearbyEl.textContent = tr("stores.placeholder");
+    }
     if (!where) return;
     const searches = [
-      { label: "Organic grocery", q: "organic grocery store" },
-      { label: "Farmers market", q: "farmers market" },
-      { label: "Butcher (grass-fed)", q: "grass-fed butcher" },
-      { label: "Fishmonger / seafood", q: "seafood market wild caught" },
-      { label: "Whole Foods", q: "Whole Foods Market" },
-      { label: "Sprouts", q: "Sprouts Farmers Market" },
-      { label: "Trader Joe's", q: "Trader Joe's" },
-      { label: "Costco (bulk)", q: "Costco Wholesale" },
-      { label: "Health food store", q: "health food store" },
-      { label: "Local CSA / farm box", q: "CSA farm box subscription" },
+      { key: "store.organic", q: "organic grocery store" },
+      { key: "store.farmers", q: "farmers market" },
+      { key: "store.butcher", q: "grass-fed butcher" },
+      { key: "store.fishmonger", q: "seafood market wild caught" },
+      { key: "store.wholeFoods", q: "Whole Foods Market" },
+      { key: "store.sprouts", q: "Sprouts Farmers Market" },
+      { key: "store.traderJoes", q: "Trader Joe's" },
+      { key: "store.costco", q: "Costco Wholesale" },
+      { key: "store.healthFood", q: "health food store" },
+      { key: "store.csa", q: "CSA farm box subscription" },
     ];
     for (const s of searches) {
       const params = new URLSearchParams({ api: "1", query: `${s.q} near ${where}` });
@@ -644,7 +646,7 @@
       a.target = "_blank";
       a.rel = "noopener noreferrer";
       a.href = url;
-      a.innerHTML = `<strong>${s.label}</strong><span>Open in Maps →</span>`;
+      a.innerHTML = `<strong>${tr(s.key)}</strong><span>${tr("stores.openInMaps")}</span>`;
       grid.appendChild(a);
     }
   }
@@ -662,14 +664,14 @@
       : 10 * w + 6.25 * h - 5 * age - 161;
     const target = Math.round((bmr * act * goal) / 25) * 25;
     document.getElementById("kcal-target").value = target;
-    toast(`Target set to ${target} kcal`);
+    toast(tr("toast.targetSet", { n: target }));
   });
 
   document.getElementById("save-prefs").addEventListener("click", () => {
     readPrefsFromForm();
     save();
     updateSummary();
-    toast("Preferences saved");
+    toast(tr("toast.prefsSaved"));
   });
 
   document.getElementById("generate-btn").addEventListener("click", () => {
@@ -681,7 +683,7 @@
     renderGrocery();
     renderStores();
     updateSummary();
-    toast("Week generated");
+    toast(tr("toast.weekGenerated"));
   });
 
   document.getElementById("reshuffle-btn").addEventListener("click", () => {
@@ -690,7 +692,7 @@
     renderWeek();
     renderTotals();
     renderGrocery();
-    toast("Reshuffled");
+    toast(tr("toast.reshuffled"));
   });
 
   document.getElementById("prev-week").addEventListener("click", () => {
@@ -711,8 +713,8 @@
   document.getElementById("copy-grocery").addEventListener("click", async () => {
     try {
       await navigator.clipboard.writeText(groceryAsText());
-      toast("Copied to clipboard");
-    } catch { toast("Copy failed"); }
+      toast(tr("toast.copied"));
+    } catch { toast(tr("toast.copyFailed")); }
   });
   document.getElementById("download-grocery").addEventListener("click", () => {
     const blob = new Blob([groceryAsText()], { type: "text/plain" });
@@ -726,19 +728,19 @@
 
   document.getElementById("loc-geo").addEventListener("click", () => {
     const status = document.getElementById("loc-status");
-    if (!navigator.geolocation) { status.textContent = "Geolocation not supported."; return; }
-    status.textContent = "Finding your location…";
+    if (!navigator.geolocation) { status.textContent = tr("loc.unsupported"); return; }
+    status.textContent = tr("loc.finding");
     navigator.geolocation.getCurrentPosition((pos) => {
       state.location.lat = pos.coords.latitude;
       state.location.lon = pos.coords.longitude;
       state.location.text = `${pos.coords.latitude.toFixed(3)}, ${pos.coords.longitude.toFixed(3)}`;
       document.getElementById("loc-input").value = state.location.text;
       save();
-      status.textContent = "Location set.";
+      status.textContent = tr("loc.set");
       renderStores();
       updateSummary();
     }, (err) => {
-      status.textContent = `Could not get location: ${err.message}`;
+      status.textContent = tr("loc.errPrefix") + err.message;
     });
   });
   document.getElementById("loc-input").addEventListener("change", (e) => {
@@ -762,4 +764,12 @@
   renderTotals();
   renderGrocery();
   renderStores();
+
+  window.addEventListener("langchange", () => {
+    updateSummary();
+    renderWeek();
+    renderTotals();
+    renderGrocery();
+    renderStores();
+  });
 })();

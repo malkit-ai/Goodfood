@@ -112,7 +112,13 @@
 
   function fmtTime(ts) {
     const d = new Date(ts);
-    return d.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
+    const loc = window.i18n ? window.i18n.getLocale() : undefined;
+    return d.toLocaleTimeString(loc, { hour: "numeric", minute: "2-digit" });
+  }
+  function tr(key, vars) { return window.t ? window.t(key, vars) : key; }
+  function trOpt(key, fallback) {
+    const v = window.t ? window.t(key) : null;
+    return v && v !== key ? v : fallback;
   }
 
   function escapeHtml(s) {
@@ -261,8 +267,7 @@
       const hits = flagText(nameInput.value);
       if (hits) {
         warn.hidden = false;
-        warn.textContent =
-          `"${hits.join(", ")}" doesn't fit the plan (no sugar, milk, fruit, grains, starch). Pick a fat / protein / fiber option.`;
+        warn.textContent = tr("meal.warningTpl", { words: hits.join(", ") });
       } else {
         warn.hidden = true;
       }
@@ -311,7 +316,7 @@
     const list = document.getElementById("meal-list");
     list.innerHTML = "";
     if (day.meals.length === 0) {
-      list.innerHTML = `<li class="entry-meta">No meals logged yet.</li>`;
+      list.innerHTML = `<li class="entry-meta">${tr("status.noMeals")}</li>`;
       return;
     }
     for (const m of day.meals) {
@@ -319,11 +324,12 @@
       const flagged = !!m.flagged || !!flagText(m.name);
       if (flagged) li.classList.add("flagged");
       const kcal = Math.round((m.fat || 0) * 9 + (m.protein || 0) * 4 + (m.carb || 0) * 4);
-      const orgTag = m.organic ? " · organic" : " · conventional";
+      const typeLabel = tr(`opt.${m.type}`);
+      const orgTag = " · " + tr(m.organic ? "meal.organic" : "meal.conventional");
       li.innerHTML = `
         <div>
           <div class="entry-name">${escapeHtml(m.name)}${flagged ? " ⚠" : ""}</div>
-          <div class="entry-meta">${m.type}${orgTag} · F${(+m.fat).toFixed(0)} P${(+m.protein).toFixed(0)} Fib${(+m.fiber).toFixed(0)} C${(+m.carb).toFixed(1)} S${(+m.sugar).toFixed(1)} · ${kcal} kcal · ${fmtTime(m.ts)}</div>
+          <div class="entry-meta">${typeLabel}${orgTag} · F${(+m.fat).toFixed(0)} P${(+m.protein).toFixed(0)} Fib${(+m.fiber).toFixed(0)} C${(+m.carb).toFixed(1)} S${(+m.sugar).toFixed(1)} · ${kcal} ${tr("unit.kcal")} · ${fmtTime(m.ts)}</div>
         </div>
         <button class="del-btn" aria-label="Delete">&times;</button>
       `;
@@ -343,15 +349,16 @@
     const list = document.getElementById("ex-list");
     list.innerHTML = "";
     if (day.exercises.length === 0) {
-      list.innerHTML = `<li class="entry-meta">No exercise logged yet. Goal: ${state.goals.exercise} min.</li>`;
+      list.innerHTML = `<li class="entry-meta">${tr("status.noExercise", { n: state.goals.exercise })}</li>`;
       return;
     }
     for (const e of day.exercises) {
       const li = document.createElement("li");
+      const intensity = tr(`opt.${e.intensity}`);
       li.innerHTML = `
         <div>
           <div class="entry-name">${escapeHtml(e.name)}</div>
-          <div class="entry-meta">${e.intensity} · ${e.minutes} min · ${fmtTime(e.ts)}</div>
+          <div class="entry-meta">${intensity} · ${e.minutes} ${tr("unit.min")} · ${fmtTime(e.ts)}</div>
         </div>
         <button class="del-btn" aria-label="Delete">&times;</button>
       `;
@@ -379,14 +386,17 @@
 
     const bits = [];
     if (day.sleep != null) {
-      const ok = day.sleep >= state.goals.sleep ? "✓" : "below 8h target";
-      bits.push(`Sleep ${day.sleep}h ${day.sleep >= state.goals.sleep ? ok : `(${ok})`}`);
+      const onTarget = day.sleep >= state.goals.sleep;
+      bits.push(`${tr("label.hoursSlept")}: ${day.sleep} ${tr("unit.hrs")}${onTarget ? " ✓" : ` (${tr("status.belowSleep")})`}`);
     }
-    if (day.stress) bits.push(`Stress ${day.stress}/5`);
-    if (day.mood) bits.push(`Mood: ${day.mood}`);
-    if (day.mindfulness) bits.push(`${day.mindfulness} min mindfulness`);
-    if (day.practices.length) bits.push(day.practices.join(" · "));
-    status.textContent = bits.length ? bits.join(" • ") : "No entries yet.";
+    if (day.stress) bits.push(`${tr("label.stress")}: ${day.stress}/5`);
+    if (day.mood) bits.push(`${tr("label.mood")}: ${tr(`opt.${day.mood}`)}`);
+    if (day.mindfulness) bits.push(`${day.mindfulness} ${tr("unit.min")} ${tr("label.mindfulness").split(" ")[0]}`);
+    if (day.practices.length) {
+      const map = { walk: "practice.walk", breathing: "practice.breathing", meditation: "practice.meditation", journal: "practice.journal", "screens-off": "practice.screens" };
+      bits.push(day.practices.map((p) => tr(map[p] || p)).join(" · "));
+    }
+    status.textContent = bits.length ? bits.join(" • ") : tr("status.noEntries");
   }
 
   function renderGoals() {
@@ -476,7 +486,7 @@
     d.sodium = Number(document.getElementById("sodium").value) || 0;
     d.electrolytes = document.getElementById("electrolytes").value;
     save();
-    toast("Hydration saved");
+    toast(tr("toast.hydrationSaved"));
   });
 
   document.getElementById("meal-form").addEventListener("submit", (e) => {
@@ -492,7 +502,7 @@
     if (!name || !Number.isFinite(fat) || !Number.isFinite(protein)) return;
 
     const flagged = !!flagText(name);
-    if (flagged && !confirm("This food is on the avoid list. Log it anyway?")) return;
+    if (flagged && !confirm(tr("confirm.bannedFood"))) return;
 
     dayData().meals.push({
       id: uid(), name, type,
@@ -509,7 +519,7 @@
     renderMeals();
     renderSummary();
     renderTrend();
-    toast("Meal added");
+    toast(tr("toast.mealAdded"));
   });
 
   document.getElementById("ex-form").addEventListener("submit", (e) => {
@@ -525,7 +535,7 @@
     renderExercises();
     renderSummary();
     renderTrend();
-    toast("Exercise logged");
+    toast(tr("toast.exerciseLogged"));
   });
 
   document.getElementById("sleep-form").addEventListener("submit", (e) => {
@@ -541,7 +551,7 @@
     renderSleep();
     renderSummary();
     renderTrend();
-    toast("Sleep & mood saved");
+    toast(tr("toast.sleepSaved"));
   });
 
   document.querySelectorAll("#practice-tags .tag").forEach((btn) => {
@@ -563,7 +573,7 @@
     day.mindfulness = Number(document.getElementById("mindful-min").value) || 0;
     save();
     renderSleep();
-    toast("Practice saved");
+    toast(tr("toast.practiceSaved"));
   });
 
   document.getElementById("goals-form").addEventListener("submit", (e) => {
@@ -579,7 +589,7 @@
     };
     save();
     renderAll();
-    toast("Goals updated");
+    toast(tr("toast.goalsUpdated"));
   });
 
   document.getElementById("export-btn").addEventListener("click", () => {
@@ -595,15 +605,19 @@
   });
 
   document.getElementById("reset-btn").addEventListener("click", () => {
-    if (!confirm("Erase all logged data and goals? This cannot be undone.")) return;
+    if (!confirm(tr("confirm.reset"))) return;
     localStorage.removeItem(STORAGE_KEY);
     state.goals = { ...DEFAULT_GOALS };
     state.days = {};
     renderAll();
-    toast("All data cleared");
+    toast(tr("toast.allCleared"));
   });
 
   renderMealForm();
   renderFoodLibrary();
   renderAll();
+
+  window.addEventListener("langchange", () => {
+    renderAll();
+  });
 })();

@@ -3,7 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Goodfood — Low-Carb Lifestyle Tracker</title>
+  <title>Goodfood — Healthy Lifestyle Tracker</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Gurmukhi:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -11,18 +14,24 @@
     <div class="brand">
       <span class="logo">GF</span>
       <div>
-        <h1>Goodfood</h1>
-        <p class="tagline">Organic · low-carb · zero-sugar · fat · protein · fiber</p>
+        <h1 data-i18n="brand.title">Goodfood</h1>
+        <p class="tagline" data-i18n="tagline.tracker">Organic · low-carb · zero-sugar · fat · protein · fiber</p>
       </div>
     </div>
     <nav class="tabs">
-      <a href="index.html" class="active">Tracker</a>
-      <a href="plan.html">Meal Plan</a>
+      <a href="index.html" class="active" data-i18n="nav.tracker">Tracker</a>
+      <a href="plan.html" data-i18n="nav.plan">Meal Plan</a>
     </nav>
-    <div class="date-control">
-      <button id="prev-day" aria-label="Previous day">&larr;</button>
-      <input type="date" id="date-picker" />
-      <button id="next-day" aria-label="Next day">&rarr;</button>
+    <div class="topbar-right">
+      <div class="lang-switch">
+        <button type="button" data-lang-btn="en" data-i18n="lang.en">EN</button>
+        <button type="button" data-lang-btn="pa" data-i18n="lang.pa">ਪੰ</button>
+      </div>
+      <div class="date-control">
+        <button id="prev-day" aria-label="Previous day">&larr;</button>
+        <input type="date" id="date-picker" />
+        <button id="next-day" aria-label="Next day">&rarr;</button>
+      </div>
     </div>
   </header>
 
@@ -35,42 +44,42 @@
         </svg>
         <div class="ring-label">
           <span id="overall-percent">0%</span>
-          <small>daily goals</small>
+          <small data-i18n="stat.dailyGoals">daily goals</small>
         </div>
       </div>
       <div class="stats">
         <div class="stat" data-metric="fat">
-          <span class="stat-label">Fat</span>
-          <span class="stat-value"><span id="fat-total">0</span> / <span id="fat-goal">130</span> g</span>
+          <span class="stat-label" data-i18n="stat.fat">Fat</span>
+          <span class="stat-value"><span id="fat-total">0</span> / <span id="fat-goal">130</span> <span data-i18n="unit.g">g</span></span>
           <div class="bar"><div class="bar-fill" id="fat-bar"></div></div>
         </div>
         <div class="stat" data-metric="protein">
-          <span class="stat-label">Protein</span>
-          <span class="stat-value"><span id="pro-total">0</span> / <span id="pro-goal">130</span> g</span>
+          <span class="stat-label" data-i18n="stat.protein">Protein</span>
+          <span class="stat-value"><span id="pro-total">0</span> / <span id="pro-goal">130</span> <span data-i18n="unit.g">g</span></span>
           <div class="bar"><div class="bar-fill" id="pro-bar"></div></div>
         </div>
         <div class="stat" data-metric="fiber">
-          <span class="stat-label">Fiber</span>
-          <span class="stat-value"><span id="fib-total">0</span> / <span id="fib-goal">25</span> g</span>
+          <span class="stat-label" data-i18n="stat.fiber">Fiber</span>
+          <span class="stat-value"><span id="fib-total">0</span> / <span id="fib-goal">25</span> <span data-i18n="unit.g">g</span></span>
           <div class="bar"><div class="bar-fill" id="fib-bar"></div></div>
         </div>
         <div class="stat" data-metric="carbs">
-          <span class="stat-label">Net carbs (cap)</span>
-          <span class="stat-value"><span id="carb-total">0</span> / <span id="carb-goal">20</span> g</span>
+          <span class="stat-label" data-i18n="stat.netCarbsCap">Net carbs (cap)</span>
+          <span class="stat-value"><span id="carb-total">0</span> / <span id="carb-goal">20</span> <span data-i18n="unit.g">g</span></span>
           <div class="bar"><div class="bar-fill cap" id="carb-bar"></div></div>
         </div>
         <div class="stat" data-metric="sugar">
-          <span class="stat-label">Sugar (cap)</span>
-          <span class="stat-value"><span id="sugar-total">0</span> / <span id="sugar-goal">0</span> g</span>
+          <span class="stat-label" data-i18n="stat.sugarCap">Sugar (cap)</span>
+          <span class="stat-value"><span id="sugar-total">0</span> / <span id="sugar-goal">0</span> <span data-i18n="unit.g">g</span></span>
           <div class="bar"><div class="bar-fill cap" id="sugar-bar"></div></div>
         </div>
         <div class="stat" data-metric="water">
-          <span class="stat-label">Water</span>
-          <span class="stat-value"><span id="water-total">0</span> / <span id="water-goal">10</span> cups</span>
+          <span class="stat-label" data-i18n="stat.water">Water</span>
+          <span class="stat-value"><span id="water-total">0</span> / <span id="water-goal">10</span> <span data-i18n="unit.cups">cups</span></span>
           <div class="bar"><div class="bar-fill" id="water-bar"></div></div>
         </div>
         <div class="stat" data-metric="organic">
-          <span class="stat-label">Organic meals</span>
+          <span class="stat-label" data-i18n="stat.organicMeals">Organic meals</span>
           <span class="stat-value"><span id="org-total">0</span> / <span id="org-count">0</span> (<span id="org-pct">0%</span>)</span>
           <div class="bar"><div class="bar-fill" id="org-bar"></div></div>
         </div>
@@ -79,176 +88,176 @@
 
     <section class="cards">
       <article class="card">
-        <h2>Water &amp; electrolytes</h2>
-        <p class="card-hint">Low-carb increases water + sodium needs. Tap cups; log salt &amp; electrolytes.</p>
+        <h2 data-i18n="card.waterTitle">Water & electrolytes</h2>
+        <p class="card-hint" data-i18n="card.waterHint">Low-carb increases water + sodium needs. Tap cups; log salt & electrolytes.</p>
         <div class="cups" id="cups"></div>
         <div class="row-form compact">
-          <button class="link-btn" id="add-cup">+ Add cup</button>
+          <button class="link-btn" id="add-cup" data-i18n="btn.addCup">+ Add cup</button>
           <label class="inline">
-            Sodium (mg)
+            <span data-i18n="label.sodium">Sodium (mg)</span>
             <input type="number" id="sodium" min="0" max="10000" step="100" />
           </label>
           <label class="inline">
-            Electrolytes
+            <span data-i18n="label.electrolytes">Electrolytes</span>
             <select id="electrolytes">
-              <option value="">—</option>
-              <option value="yes">Taken</option>
-              <option value="no">Skipped</option>
+              <option value="" data-i18n="opt.dash">—</option>
+              <option value="yes" data-i18n="opt.taken">Taken</option>
+              <option value="no" data-i18n="opt.skipped">Skipped</option>
             </select>
           </label>
-          <button id="save-hydration" type="button">Save</button>
+          <button id="save-hydration" type="button" data-i18n="btn.save">Save</button>
         </div>
       </article>
 
       <article class="card">
-        <h2>Meal log</h2>
-        <p class="card-hint">Macros only — organic, no milk, no fruit, no sugar. Calories auto-calculated.</p>
+        <h2 data-i18n="card.mealsTitle">Meal log</h2>
+        <p class="card-hint" data-i18n="card.mealsHint">Macros only — organic, no milk, no fruit, no sugar. Calories auto-calculated.</p>
         <form id="meal-form" class="meal-form">
-          <input type="text" id="meal-name" placeholder="e.g. Ribeye with butter & spinach" required list="food-suggestions" />
+          <input type="text" id="meal-name" data-i18n-placeholder="ph.mealName" placeholder="e.g. Ribeye with butter & spinach" required list="food-suggestions" />
           <datalist id="food-suggestions"></datalist>
           <select id="meal-type">
-            <option value="breakfast">Breakfast</option>
-            <option value="lunch">Lunch</option>
-            <option value="dinner">Dinner</option>
-            <option value="snack">Snack</option>
+            <option value="breakfast" data-i18n="opt.breakfast">Breakfast</option>
+            <option value="lunch" data-i18n="opt.lunch">Lunch</option>
+            <option value="dinner" data-i18n="opt.dinner">Dinner</option>
+            <option value="snack" data-i18n="opt.snack">Snack</option>
           </select>
           <div class="macros-grid">
-            <label>Fat (g)<input type="number" id="meal-fat" min="0" step="0.1" required /></label>
-            <label>Protein (g)<input type="number" id="meal-pro" min="0" step="0.1" required /></label>
-            <label>Fiber (g)<input type="number" id="meal-fib" min="0" step="0.1" value="0" /></label>
-            <label>Net carbs (g)<input type="number" id="meal-carb" min="0" step="0.1" value="0" /></label>
-            <label>Sugar (g)<input type="number" id="meal-sugar" min="0" step="0.1" value="0" /></label>
+            <label><span data-i18n="label.fatG">Fat (g)</span><input type="number" id="meal-fat" min="0" step="0.1" required /></label>
+            <label><span data-i18n="label.proG">Protein (g)</span><input type="number" id="meal-pro" min="0" step="0.1" required /></label>
+            <label><span data-i18n="label.fibG">Fiber (g)</span><input type="number" id="meal-fib" min="0" step="0.1" value="0" /></label>
+            <label><span data-i18n="label.netCarbsG">Net carbs (g)</span><input type="number" id="meal-carb" min="0" step="0.1" value="0" /></label>
+            <label><span data-i18n="label.sugarG">Sugar (g)</span><input type="number" id="meal-sugar" min="0" step="0.1" value="0" /></label>
           </div>
           <label class="organic-toggle">
             <input type="checkbox" id="meal-organic" checked />
-            <span>Organic / grass-fed / wild-caught</span>
+            <span data-i18n="label.organicToggle">Organic / grass-fed / wild-caught</span>
           </label>
           <div id="meal-warning" class="warning" hidden></div>
-          <button type="submit">Add meal</button>
+          <button type="submit" data-i18n="btn.addMeal">Add meal</button>
         </form>
         <ul class="entries" id="meal-list"></ul>
       </article>
 
       <article class="card">
-        <h2>Approved foods</h2>
-        <p class="card-hint">Choose organic / grass-fed / wild whenever possible. Click to prefill the meal form.</p>
+        <h2 data-i18n="card.approvedTitle">Approved foods</h2>
+        <p class="card-hint" data-i18n="card.approvedHint">Choose organic / grass-fed / wild whenever possible. Click to prefill the meal form.</p>
         <div class="food-cats">
           <div>
-            <h3>Fat</h3>
+            <h3 data-i18n="h.fat">Fat</h3>
             <ul class="food-list" data-cat="fat"></ul>
           </div>
           <div>
-            <h3>Protein</h3>
+            <h3 data-i18n="h.protein">Protein</h3>
             <ul class="food-list" data-cat="protein"></ul>
           </div>
           <div>
-            <h3>Fiber (low-carb veg)</h3>
+            <h3 data-i18n="h.fiber">Fiber (low-carb veg)</h3>
             <ul class="food-list" data-cat="fiber"></ul>
           </div>
           <div class="avoid">
-            <h3>Avoid</h3>
+            <h3 data-i18n="h.avoid">Avoid</h3>
             <ul class="avoid-list">
-              <li>All sugars &amp; sweeteners with calories</li>
-              <li>Milk, yogurt drinks (cream &amp; hard cheese ok if tolerated)</li>
-              <li>All fruit (incl. bananas, apples, grapes, dates)</li>
-              <li>Grains, bread, rice, pasta, oats</li>
-              <li>Legumes (beans, lentils, chickpeas)</li>
-              <li>Starchy veg (potato, corn, peas)</li>
-              <li>Sweetened drinks &amp; juice</li>
+              <li data-i18n="avoid.sugar">All sugars &amp; sweeteners with calories</li>
+              <li data-i18n="avoid.milk">Milk, yogurt drinks (cream &amp; hard cheese ok if tolerated)</li>
+              <li data-i18n="avoid.fruit">All fruit (incl. bananas, apples, grapes, dates)</li>
+              <li data-i18n="avoid.grains">Grains, bread, rice, pasta, oats</li>
+              <li data-i18n="avoid.legumes">Legumes (beans, lentils, chickpeas)</li>
+              <li data-i18n="avoid.starchy">Starchy veg (potato, corn, peas)</li>
+              <li data-i18n="avoid.drinks">Sweetened drinks &amp; juice</li>
             </ul>
           </div>
         </div>
       </article>
 
       <article class="card">
-        <h2>Exercise</h2>
+        <h2 data-i18n="card.exerciseTitle">Exercise</h2>
         <form id="ex-form" class="row-form">
-          <input type="text" id="ex-name" placeholder="e.g. Heavy lifts, walk, sprints" required />
-          <input type="number" id="ex-min" placeholder="minutes" min="1" max="600" required />
+          <input type="text" id="ex-name" data-i18n-placeholder="ph.exName" placeholder="e.g. Heavy lifts, walk, sprints" required />
+          <input type="number" id="ex-min" data-i18n-placeholder="ph.minutes" placeholder="minutes" min="1" max="600" required />
           <select id="ex-intensity">
-            <option value="light">Light</option>
-            <option value="moderate" selected>Moderate</option>
-            <option value="vigorous">Vigorous</option>
+            <option value="light" data-i18n="opt.light">Light</option>
+            <option value="moderate" selected data-i18n="opt.moderate">Moderate</option>
+            <option value="vigorous" data-i18n="opt.vigorous">Vigorous</option>
           </select>
-          <button type="submit">Add</button>
+          <button type="submit" data-i18n="btn.add">Add</button>
         </form>
         <ul class="entries" id="ex-list"></ul>
       </article>
 
       <article class="card">
-        <h2>Sleep, stress &amp; mood</h2>
-        <p class="card-hint">Target: 8h sleep · stress less every day.</p>
+        <h2 data-i18n="card.sleepTitle">Sleep, stress &amp; mood</h2>
+        <p class="card-hint" data-i18n="card.sleepHint">Target: 8h sleep · stress less every day.</p>
         <form id="sleep-form" class="row-form">
           <label class="inline">
-            Hours slept
+            <span data-i18n="label.hoursSlept">Hours slept</span>
             <input type="number" id="sleep-hours" min="0" max="24" step="0.5" placeholder="8" />
           </label>
           <label class="inline">
-            Stress (1–5)
+            <span data-i18n="label.stress">Stress (1–5)</span>
             <select id="stress">
-              <option value="">—</option>
-              <option value="1">1 — calm</option>
+              <option value="" data-i18n="opt.dash">—</option>
+              <option value="1" data-i18n="opt.stress1">1 — calm</option>
               <option value="2">2</option>
               <option value="3">3</option>
               <option value="4">4</option>
-              <option value="5">5 — overwhelmed</option>
+              <option value="5" data-i18n="opt.stress5">5 — overwhelmed</option>
             </select>
           </label>
           <label class="inline">
-            Mood
+            <span data-i18n="label.mood">Mood</span>
             <select id="mood">
-              <option value="">—</option>
-              <option value="great">Great</option>
-              <option value="good">Good</option>
-              <option value="okay">Okay</option>
-              <option value="low">Low</option>
+              <option value="" data-i18n="opt.dash">—</option>
+              <option value="great" data-i18n="opt.great">Great</option>
+              <option value="good" data-i18n="opt.good">Good</option>
+              <option value="okay" data-i18n="opt.okay">Okay</option>
+              <option value="low" data-i18n="opt.low">Low</option>
             </select>
           </label>
-          <button type="submit">Save</button>
+          <button type="submit" data-i18n="btn.save">Save</button>
         </form>
         <div class="practice-row">
           <label class="inline">
-            Mindfulness / breathing (min)
+            <span data-i18n="label.mindfulness">Mindfulness / breathing (min)</span>
             <input type="number" id="mindful-min" min="0" max="180" step="1" placeholder="10" />
           </label>
           <div class="practice-tags" id="practice-tags">
-            <button type="button" class="tag" data-practice="walk">Outdoor walk</button>
-            <button type="button" class="tag" data-practice="breathing">Breathing</button>
-            <button type="button" class="tag" data-practice="meditation">Meditation</button>
-            <button type="button" class="tag" data-practice="journal">Journal</button>
-            <button type="button" class="tag" data-practice="screens-off">Screens off 1h</button>
+            <button type="button" class="tag" data-practice="walk" data-i18n="practice.walk">Outdoor walk</button>
+            <button type="button" class="tag" data-practice="breathing" data-i18n="practice.breathing">Breathing</button>
+            <button type="button" class="tag" data-practice="meditation" data-i18n="practice.meditation">Meditation</button>
+            <button type="button" class="tag" data-practice="journal" data-i18n="practice.journal">Journal</button>
+            <button type="button" class="tag" data-practice="screens-off" data-i18n="practice.screens">Screens off 1h</button>
           </div>
-          <button type="button" id="save-practice">Save practice</button>
+          <button type="button" id="save-practice" data-i18n="btn.savePractice">Save practice</button>
         </div>
-        <p class="card-hint" id="sleep-status">No entries yet.</p>
+        <p class="card-hint" id="sleep-status" data-i18n="status.noEntries">No entries yet.</p>
       </article>
 
       <article class="card wide">
-        <h2>7-day macro trend</h2>
+        <h2 data-i18n="card.trendTitle">7-day macro trend</h2>
         <div class="trend" id="trend"></div>
         <div class="legend">
-          <span><i class="dot fat"></i> Fat</span>
-          <span><i class="dot pro"></i> Protein</span>
-          <span><i class="dot fib"></i> Fiber</span>
-          <span><i class="dot carb"></i> Net carbs</span>
-          <span><i class="dot sugar"></i> Sugar</span>
+          <span><i class="dot fat"></i> <span data-i18n="legend.fat">Fat</span></span>
+          <span><i class="dot pro"></i> <span data-i18n="legend.protein">Protein</span></span>
+          <span><i class="dot fib"></i> <span data-i18n="legend.fiber">Fiber</span></span>
+          <span><i class="dot carb"></i> <span data-i18n="legend.carbs">Net carbs</span></span>
+          <span><i class="dot sugar"></i> <span data-i18n="legend.sugar">Sugar</span></span>
         </div>
       </article>
 
       <article class="card wide">
-        <h2>Goals</h2>
+        <h2 data-i18n="card.goalsTitle">Goals</h2>
         <form id="goals-form" class="goals-grid">
-          <label>Fat (g)<input type="number" id="goal-fat" min="20" max="400" /></label>
-          <label>Protein (g)<input type="number" id="goal-pro" min="30" max="400" /></label>
-          <label>Fiber (g)<input type="number" id="goal-fib" min="5" max="80" /></label>
-          <label>Net carbs cap (g)<input type="number" id="goal-carb" min="0" max="100" /></label>
-          <label>Sugar cap (g)<input type="number" id="goal-sugar" min="0" max="50" /></label>
-          <label>Water (cups)<input type="number" id="goal-water" min="1" max="30" /></label>
-          <button type="submit">Save goals</button>
+          <label><span data-i18n="label.fatG">Fat (g)</span><input type="number" id="goal-fat" min="20" max="400" /></label>
+          <label><span data-i18n="label.proG">Protein (g)</span><input type="number" id="goal-pro" min="30" max="400" /></label>
+          <label><span data-i18n="label.fibG">Fiber (g)</span><input type="number" id="goal-fib" min="5" max="80" /></label>
+          <label><span data-i18n="label.carbCap">Net carbs cap (g)</span><input type="number" id="goal-carb" min="0" max="100" /></label>
+          <label><span data-i18n="label.sugarCap">Sugar cap (g)</span><input type="number" id="goal-sugar" min="0" max="50" /></label>
+          <label><span data-i18n="label.waterCups">Water (cups)</span><input type="number" id="goal-water" min="1" max="30" /></label>
+          <button type="submit" data-i18n="btn.saveGoals">Save goals</button>
         </form>
         <div class="data-actions">
-          <button class="link-btn" id="export-btn">Export data</button>
-          <button class="link-btn danger" id="reset-btn">Reset all data</button>
+          <button class="link-btn" id="export-btn" data-i18n="btn.exportData">Export data</button>
+          <button class="link-btn danger" id="reset-btn" data-i18n="btn.resetData">Reset all data</button>
         </div>
       </article>
     </section>
@@ -256,6 +265,7 @@
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
+  <script src="i18n.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
